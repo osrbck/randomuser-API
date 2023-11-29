@@ -1,41 +1,37 @@
-import { useState, useEffect, useRef } from "react";
+import React from "react";
+import "./App.css";
 
-export default function App() {
-  const [day, setDay] = useState("Monday");
-  const prevDay = usePrevious(day);
+function App() {
+  const [user, setUser] = React.useState([]);
 
-  const getNextDay = () => {
-    if (day === "Monday") {
-      setDay("Tuesday");
-    } else if (day === "Tuesday") {
-      setDay("Wednesday");
-    } else if (day === "Wednesday") {
-      setDay("Thursday");
-    } else if (day === "Thursday") {
-      setDay("Friday");
-    } else if (day === "Friday") {
-      setDay("Monday");
-    }
+  const fetchData = () => {
+    fetch("https://randomuser.me/api/?results=1")
+      .then((response) => response.json())
+      .then((data) => setUser(data));
   };
 
-  return (
-    <div style={{ padding: "40px" }}>
-      <h1>
-        Today is: {day}
-        <br />
-        {prevDay && <span>Previous work day was: {prevDay}</span>}
-      </h1>
-      <button onClick={getNextDay}>Get next day</button>
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleFetchNewUser = () => {
+    fetchData();
+  };
+
+  return Object.keys(user).length > 0 ? (
+    <div className="container">
+      <h1>Data returned</h1>
+      <div className="user-info">
+        <h2>First Name: {user.results[0].name.first}</h2>
+        <h2>Last Name: {user.results[0].name.last}</h2>
+      </div>
+      <button className="button" onClick={handleFetchNewUser}>
+        Fetch New User
+      </button>
     </div>
+  ) : (
+    <h1>Data pending.</h1>
   );
 }
 
-function usePrevious(val) {
-  const ref = useRef();
-
-  useEffect(() => {
-    ref.current = val;
-  }, [val]);
-
-  return ref.current;
-}
+export default App;
