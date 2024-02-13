@@ -33,7 +33,6 @@ function App() {
     <div className="container">
       <h1>Data pending.</h1>
     </div>
-    
   );
 }
 
