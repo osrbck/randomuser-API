@@ -30,7 +30,10 @@ function App() {
       </button>
     </div>
   ) : (
-    <h1>Data pending.</h1>
+    <div className="container">
+      <h1>Data pending.</h1>
+    </div>
+    
   );
 }
 
